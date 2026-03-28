@@ -1,1 +1,944 @@
-(Reading the content of the file to push it)
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-25..0&display=block');
+
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined' !important;
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        font-feature-settings: 'liga';
+    }
+
+    :root {
+            /* Palette Rocket.new */
+            --bg-light: #F5E9F2; /* Blanc rosé doux */
+            --bg-neutral: #F2F2F2; /* Gris très clair */
+            --primary-dark: #1E2A8A; /* Bleu profond */
+            --primary-indigo: #2F3FBF; /* Bleu indigo */
+            --accent-violet: #7A3FD9; /* Violet vibrant */
+            --accent-magenta: #D94F9D; /* Magenta rosé */
+            --accent-fuchsia: #F25CA2; /* Rose fuchsia (hover) */
+            --accent-lavender: #C9A6FF; /* Lavande claire */
+            
+            --text-main: #1E2A8A;
+            --text-muted: #4a5568;
+            --white: #ffffff;
+            --radius-btn: 12px;
+            --radius-card: 24px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-neutral);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* REUSABLE */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 32px;
+            border-radius: var(--radius-btn);
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-violet), var(--accent-magenta));
+            color: var(--white);
+            box-shadow: 0 8px 24px rgba(217, 79, 157, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--accent-magenta), var(--accent-fuchsia));
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(242, 92, 162, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        .btn-outline:hover {
+            background: rgba(217, 79, 157, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .section-tag {
+            display: inline-block;
+            background: var(--bg-light);
+            color: var(--accent-violet);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            border: 1px solid var(--accent-lavender);
+        }
+
+        /* HEADER */
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(201, 166, 255, 0.2);
+        }
+
+        .nav-container {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            color: var(--accent-magenta);
+        }
+
+        /* HERO */
+        .hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(180deg, var(--bg-light) 0%, var(--bg-neutral) 100%);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 64px);
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--primary-indigo), var(--accent-violet));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-images {
+            margin-top: 60px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* HISTOIRE & PROBLEME */
+        .story-section {
+            padding: 80px 0;
+            background: var(--white);
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .story-content h2 {
+            font-size: 36px;
+            margin-bottom: 24px;
+            color: var(--primary-dark);
+        }
+        
+        .story-content p {
+            font-size: 17px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .story-image-box {
+            background: var(--bg-light);
+            border-radius: var(--radius-card);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .story-image-box .icon {
+            font-size: 80px;
+            color: var(--accent-magenta);
+            margin-bottom: 20px;
+        }
+
+        /* PACKS - ACCENT SUR LE CLAIR ET L'ATTRAYANT */
+        .packs-section {
+            padding: 100px 0;
+            background: var(--bg-neutral);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .section-header h2 {
+            font-size: 42px;
+            margin-bottom: 16px;
+        }
+
+        .packs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .pack-card {
+            background: var(--white);
+            border-radius: var(--radius-card);
+            padding: 50px 40px;
+            position: relative;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(201, 166, 255, 0.3);
+        }
+
+        .pack-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(30, 42, 138, 0.08);
+            border-color: var(--accent-lavender);
+        }
+
+        .pack-card.popular {
+            background: var(--primary-dark);
+            color: var(--white);
+            transform: scale(1.05);
+            border: none;
+            box-shadow: 0 24px 48px rgba(30, 42, 138, 0.15);
+        }
+
+        .pack-card.popular:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+
+        .pack-card.popular h3,
+        .pack-card.popular .price,
+        .pack-card.popular li {
+            color: var(--white);
+        }
+
+        .pack-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-magenta);
+            color: var(--white);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .pack-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .pack-card .price {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .pack-card .price span {
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+
+        .pack-card ul {
+            list-style: none;
+            margin-bottom: 40px;
+            flex-grow: 1;
+        }
+
+        .pack-card li {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        .pack-card li::before {
+            content: 'check_circle';
+            font-family: 'Material Symbols Outlined';
+            position: absolute;
+            left: 0;
+            top: -2px;
+            color: var(--accent-violet);
+            font-size: 20px;
+        }
+
+        .pack-card.popular li::before {
+            color: var(--accent-magenta);
+        }
+
+        /* EXPERTISE LOCALE (CREDIBILITE) */
+        .local-section {
+            padding: 80px 0;
+            background: var(--primary-dark);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .local-section h2 {
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .local-section p {
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 18px;
+        }
+
+        /* MODAL FOR DIAGNOSTIC (Replaces Dashboard) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(30, 42, 138, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--radius-card);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(30, 42, 138, 0.2);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-violet);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--bg-neutral);
+            padding: 60px 0 40px;
+            border-top: 1px solid rgba(201, 166, 255, 0.3);
+            text-align: center;
+        }
+
+        footer .logo {
+            margin-bottom: 20px;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        footer a {
+            color: var(--accent-violet);
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            color: var(--accent-magenta);
+        }
+
+        @media(max-width: 992px) {
+            .story-grid { grid-template-columns: 1fr; }
+            .pack-card.popular { transform: none; }
+            .pack-card.popular:hover { transform: translateY(-5px); }
+        }
+
+        /* METHODOLOGY */
+        .method-section { padding: 80px 0; background: var(--bg-neutral); }
+        .method-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px; }
+        .method-card { background: var(--white); padding: 30px; border-radius: var(--radius-card); box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+        .method-number { font-size: 48px; font-weight: 800; color: var(--accent-indigo); opacity: 0.2; margin-bottom: 10px; display: block; }
+        .method-card h3 { font-size: 20px; color: var(--primary-dark); margin-bottom: 15px; }
+        
+        /* ABOUT ME */
+        .about-section { padding: 80px 0; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .about-content h3 { margin-top: 20px; font-size: 20px; color: var(--primary-dark); }
+        .about-content ul { list-style: none; margin-top: 20px; }
+        .about-content li { margin-bottom: 15px; padding-left: 30px; position: relative; }
+        .about-content li::before { content: 'verified'; font-family: 'Material Symbols Outlined'; position: absolute; left: 0; color: var(--accent-violet); }
+
+        /* FAQ */
+        .faq-section { padding: 80px 0; background: var(--bg-neutral); }
+        .faq-grid { max-width: 800px; margin: 0 auto; margin-top: 40px; }
+        .faq-item { background: var(--white); margin-bottom: 20px; padding: 25px; border-radius: var(--radius-card); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .faq-item h3 { font-size: 18px; color: var(--primary-dark); margin-bottom: 10px; }
+        .faq-item p { color: var(--text-muted); font-size: 15px; line-height: 1.6; }
+
+        @media(max-width: 768px) {
+            .method-grid, .about-grid { grid-template-columns: 1fr; }
+        }
+
+        /* BENEFITS & METRICS */
+        .benefits-section { padding: 80px 0; background: var(--white); }
+        .benefits-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-bottom: 60px; }
+        .benefit-item { display: flex; gap: 20px; }
+        .benefit-item .icon { color: var(--accent-magenta); font-size: 32px; }
+        .benefit-item h3 { margin-bottom: 8px; color: var(--primary-dark); }
+        
+        .metrics-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; background: var(--bg-neutral); padding: 40px; border-radius: var(--radius-card); }
+        .metric-value { display: block; font-size: 36px; font-weight: 800; color: var(--accent-indigo); }
+        .metric-label { font-size: 14px; color: var(--text-muted); font-weight: 600; }
+
+        /* TESTIMONIALS */
+        .testimonials-section { padding: 60px 0; background: var(--primary-dark); color: var(--white); }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .testimonial-card { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
+        .testimonial-card p { font-style: italic; font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
+        .testimonial-card .author { font-weight: 700; color: var(--accent-lavender); }
+        .testimonial-card .role { font-size: 13px; opacity: 0.7; }
+
+        /* PROBLEM DETAIL */
+        .problem-list { margin-top: 30px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .problem-item { display: flex; gap: 15px; align-items: flex-start; }
+        .problem-item span { color: var(--accent-magenta); }
+
+        @media(max-width: 768px) {
+            .benefits-grid, .metrics-bar, .testimonials-grid, .problem-list { grid-template-columns: 1fr; }
+        }
+
+        /* FINAL CTA SECTION */
+        .final-cta-section { 
+            padding: 80px 0; 
+            background: var(--primary-dark); /* Fallback */
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-indigo) 100%); 
+            color: var(--white); 
+            text-align: center; 
+        }
+        .final-cta-section h2, .final-cta-section h3, .final-cta-section p { color: var(--white) !important; }
+        .cta-content { max-width: 800px; margin: 0 auto; }
+        .cta-features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: left; margin: 40px 0; }
+        .cta-feature-item { display: flex; gap: 15px; align-items: center; background: rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 12px; }
+        
+        /* FOOTER REFINEMENT */
+        footer { background: var(--primary-dark) !important; color: var(--white) !important; }
+        footer .logo, footer p, footer a { color: var(--white) !important; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; flex-wrap: wrap; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-top: 30px; font-size: 12px; opacity: 0.6; }
+</style>
+
+<div class="notranslate">
+
+    <!-- HEADER -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">Brenda<span>boxia</span></a>
+            <div style="display: flex; gap: 15px;">
+                <a href="mailto:contact@brendaboxia.com" class="btn btn-outline" style="padding: 10px 20px; font-size: 14px;">Me contacter</a>
+                <button onclick="openModal()" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px;">Audit Offert</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <span class="section-tag">Optimisation Google & Apple Business</span>
+            <h1>Gérez votre Profil Digital Business <br>en un <span class="highlight">claquement de doigt</span>.</h1>
+            <p>Vous êtes un artisan, un commerçant, un chef d'entreprise. Votre talent est dans votre savoir-faire, pas dans la gestion technique des fiches Google ou la réponse aux avis. 
+            Brendaboxia met la puissance de l'IA au service de votre business : capture de clients 24h/24, protection de votre réputation et autonomie totale.</p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <button onclick="openModal()" class="btn btn-primary">
+                    Demander mon audit gratuit
+                    <span class="material-symbols-outlined" translate="no">arrow_forward</span>
+                </button>
+                <a href="#packs" class="btn btn-outline">
+                    Découvrir les offres
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE STORY / PROBLEM -->
+    <section class="story-section">
+        <div class="container story-grid">
+            <div class="story-content">
+                <span class="section-tag">Le Constat</span>
+                <h2>Votre vitrine digitale est votre <span class="highlight">premier vendeur</span>.</h2>
+                <p>Aujourd'hui, l'immense majorité de vos clients vous trouve d'abord sur une carte. Google Maps ou Apple Plans ne sont plus de simples GPS, ce sont **vos nouvelles vitrines interactives**.</p>
+                <p>Si votre présence est négligée (informations erronées, avis sans réponse, photos absentes), c'est comme si vous laissiez votre rideau de fer à moitié baissé en pleine saison. C'est du chiffre d'affaires qui s'évapore chaque jour.</p>
+                
+                <div class="problem-list">
+                    <div class="problem-item">
+                        <span class="material-symbols-outlined" translate="no">payments</span>
+                        <p style="font-size: 14px; margin: 0;"><strong>Protégez votre marge</strong>: Arrêtez de payer des agences ou des intermédiaires gourmands. Reprenez le contrôle total.</p>
+                    </div>
+                    <div class="problem-item">
+                        <span class="material-symbols-outlined" translate="no">auto_mode</span>
+                        <p style="font-size: 14px; margin: 0;"><strong>Pilotage Automatique</strong>: L'IA gère vos avis et vos infos 24h/24. Plus besoin de CM à gérer.</p>
+                    </div>
+                    <div class="problem-item">
+                        <span class="material-symbols-outlined" translate="no">language</span>
+                        <p style="font-size: 14px; margin: 0;"><strong>Capture de clientèle</strong>: Répondez instantanément dans toutes les langues. Captez tout le flux local et touristique.</p>
+                    </div>
+                    <div class="problem-item">
+                        <span class="material-symbols-outlined" translate="no">verified_user</span>
+                        <p style="font-size: 14px; margin: 0;"><strong>Soulagement réel</strong>: Libérez votre charge mentale. Le marketing se fait tout seul, sous votre contrôle.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 25px;"><strong>La bonne nouvelle ?</strong> Ce système autonome s'installe une fois pour toutes. C'est là que j'interviens.</p>
+            </div>
+            <div class="story-image-box" style="padding: 0; background: none; border: none; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.15); border-radius: var(--radius-card);">
+                <img src="https://raw.githubusercontent.com/Brendaweb3/assets-brendaboxia/main/boulangerie.png" alt="Exemple d'optimisation locale" style="width: 100%; height: auto; display: block;">
+                <div style="padding: 25px; background: var(--white);">
+                    <h3 style="font-size: 22px; margin-bottom: 8px; color: var(--primary-dark);">La Confiance avant tout</h3>
+                    <p style="margin:0; font-size: 14px; color: var(--text-muted);">Un profil soigné projette l'image d'un professionnel fiable, ouvert et à l'écoute de sa clientèle locale et touristique.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CE QUE VOUS GAGNEZ -->
+    <section class="benefits-section">
+        <div class="container">
+            <div class="section-header" style="text-align: center; margin-bottom: 50px;">
+                <span class="section-tag">IMPACT</span>
+                <h2>Ce que vous gagnez avec un profil soigné.</h2>
+                <p style="color: var(--text-muted); font-size: 18px;">Moins de doutes pour vos clients, plus de résultats concrets pour vous.</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <span class="material-symbols-outlined icon">verified</span>
+                    <div>
+                        <h3>Crédibilité immédiate</h3>
+                        <p style="font-size: 15px; color: var(--text-muted);">Une fiche complète envoie un signal fort : “Ce professionnel est sérieux et actif.”</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="material-symbols-outlined icon">explore</span>
+                    <div>
+                        <h3>Visible là où ça compte</h3>
+                        <p style="font-size: 15px; color: var(--text-muted);">On s'assure que vous êtes présent et convaincant sur Google, Apple et Bing.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="material-symbols-outlined icon">handshake</span>
+                    <div>
+                        <h3>La confiance avant le RDV</h3>
+                        <p style="font-size: 15px; color: var(--text-muted);">Les avis bien gérés construisent votre réputation avant même le premier contact.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <span class="material-symbols-outlined icon">schedule</span>
+                    <div>
+                        <h3>Des résultats qui durent</h3>
+                        <p style="font-size: 15px; color: var(--text-muted);">Une fois optimisée, votre fiche continue de travailler pour vous gratuitement.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics-bar">
+                <div>
+                    <span class="metric-value">3×</span>
+                    <span class="metric-label">plus de clics sur votre fiche</span>
+                </div>
+                <div>
+                    <span class="metric-value">+40%</span>
+                    <span class="metric-label">de demandes d'itinéraire</span>
+                </div>
+                <div>
+                    <span class="metric-value">2×</span>
+                    <span class="metric-label">plus d'appels directs</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LA METHODE -->
+    <section class="method-section">
+        <div class="container">
+            <div class="section-header" style="text-align: center;">
+                <span class="section-tag">La méthode</span>
+                <h2>Simple pour vous. Expert pour moi.</h2>
+                <p style="color: var(--text-muted); font-size: 18px; max-width: 700px; margin: 0 auto;">Vous n'avez pas besoin de comprendre comment fonctionne Google Business pour en bénéficier. C'est exactement pour ça que j'existe.</p>
+            </div>
+            <div class="method-grid">
+                <div class="method-card">
+                    <span class="method-number">1</span>
+                    <h3>Vous me partagez vos infos</h3>
+                    <p style="font-size: 15px; color: var(--text-muted);">Un simple formulaire ou un échange rapide par email. Pas de réunion, pas de préparation. 10 minutes de votre temps, c'est tout.</p>
+                </div>
+                <div class="method-card">
+                    <span class="method-number">2</span>
+                    <h3>J'analyse en profondeur</h3>
+                    <p style="font-size: 15px; color: var(--text-muted);">Je passe vos fiches au peigne fin — cohérence, complétude, photos, avis, catégories, mots-clés. Avec l'œil d'une experte IA.</p>
+                </div>
+                <div class="method-card">
+                    <span class="method-number">3</span>
+                    <h3>Vous recevez le plan d'action</h3>
+                    <p style="font-size: 15px; color: var(--text-muted);">Un rapport clair, en français, avec des recommandations concrètes — et selon votre pack, je m'occupe des corrections directement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PACKS -->
+    <section id="packs" class="packs-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Des solutions simples et concrètes</span>
+                <h2>Des Packs conçus pour votre tranquillité.</h2>
+                <p style="color: var(--text-muted); font-size: 18px;">Choisissez l'accompagnement qui correspond le mieux à vos objectifs. Tout est clair, défini et sans surprises.</p>
+            </div>
+
+            <div class="packs-grid">
+                
+                <!-- Pack 1 -->
+                <div class="pack-card">
+                    <h3>Essentiel Business</h3>
+                    <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.8; line-height: 1.4;">Reprenez le contrôle immédiatement</p>
+                    <div class="price">197€ <span>paiement unique</span></div>
+                    <ul>
+                        <li><strong>Audit & Nettoyage complet Google Business</strong></li>
+                        <li>Optimisation des mots-clés "Affaires"</li>
+                        <li>Mise en conformité Apple & Bing</li>
+                        <li><strong>1 Mois d'assistance IA incluse</strong></li>
+                        <li>Formation à l'autonomie (Guide 1 page)</li>
+                    </ul>
+                    <button onclick="openModal()" class="btn btn-outline" style="width: 100%;">Je commence mon "Snap"</button>
+                </div>
+
+                <!-- Pack 2 -->
+                <div class="pack-card popular">
+                    <div class="pack-badge">Le plus autonome</div>
+                    <h3>Sérénité 365</h3>
+                    <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.8; line-height: 1.4;">L'IA gère tout pendant 1 an</p>
+                    <div class="price">497€ <span>paiement unique</span></div>
+                    <ul>
+                        <li>Tout le Pack <strong>Essentiel Business</strong></li>
+                        <li><strong>1 AN d'Assistance IA Antigravity INCLUS</strong></li>
+                        <li>Réponses automatiques aux avis (24h/24)</li>
+                        <li>Traduction & Accueil touristique (Multilingue)</li>
+                        <li>Mise à jour automatique des services & horaires</li>
+                        <li style="font-weight: 700;">49€/mois après 12 mois (Sans engagement)</li>
+                    </ul>
+                    <button onclick="openModal()" class="btn btn-primary" style="width: 100%; background: var(--white); color: var(--primary-dark); box-shadow: none;">Je passe en Pilote Automatique</button>
+                </div>
+
+                <!-- Pack 3 -->
+                <div class="pack-card" style="padding-top: 0;">
+                    <div style="width: calc(100% + 14px); margin-left: -7px; margin-top: -7px; border-top-left-radius: var(--radius-card); border-top-right-radius: var(--radius-card); overflow: hidden; height: 180px;">
+                        <img src="https://raw.githubusercontent.com/Brendaweb3/assets-brendaboxia/main/vitrine.png" alt="Domination Totale" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="padding: 24px;">
+                        <h3>Domination Totale</h3>
+                        <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.8; line-height: 1.4;">Service de conciergerie digitale complet</p>
+                        <div class="price">997€ <span>paiement unique</span></div>
+                        <ul>
+                            <li>Tout le Pack <strong>Sérénité 365</strong></li>
+                            <li><strong>1 AN d'Assistance IA Premium</strong></li>
+                            <li>Audit SEO trimestriel par un humain</li>
+                            <li>Configuration QR Codes de capture clients</li>
+                            <li>Shooting photo professionnel (Zone 64500)</li>
+                            <li>Support VIP en direct</li>
+                            <li style="font-weight: 700;">49€/mois après 12 mois (Inclus 1er an)</li>
+                        </ul>
+                        <button onclick="openModal()" class="btn btn-outline" style="width: 100%;">Je veux la Domination Totale</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- QUI SUIS-JE -->
+    <section class="about-section">
+        <div class="container about-grid">
+            <div class="about-image">
+                <div style="background: var(--white); padding: 30px 20px; border-radius: var(--radius-card); text-align: center; border: 1px solid rgba(201, 166, 255, 0.2); box-shadow: 0 10px 30px rgba(30, 42, 138, 0.05);">
+                    <!-- PHOTO RÉELLE DE BERNADETTE -->
+                    <div style="width: 140px; height: 140px; margin: 0 auto 20px; border-radius: 100px; overflow: hidden; border: 3px solid var(--accent-magenta); box-shadow: 0 10px 20px rgba(214, 6, 131, 0.2);">
+                        <img src="https://raw.githubusercontent.com/Brendaweb3/assets-brendaboxia/main/bernadette.png" alt="Bernadette" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h2 style="font-size: 24px; margin-bottom: 5px; color: var(--primary-dark);">Bernadette Périer-Dubernet</h2>
+                    <p style="font-weight: 700; color: var(--accent-indigo); font-size: 15px;">Architecte IA · BRENDABOX E.I.</p>
+                    <p style="margin-top: 10px; color: var(--text-muted); font-size: 14px;"><span class="material-symbols-outlined" style="vertical-align: middle; font-size: 16px;" translate="no">location_on</span> Ciboure, Pays Basque</p>
+                    <p style="margin-top: 5px; color: var(--text-muted); font-size: 13px;">🇫🇷 Français &nbsp;🇪🇸 Español &nbsp;🇬🇧 English</p>
+                </div>
+            </div>
+            <div class="about-content">
+                <span class="section-tag">Qui suis-je ?</span>
+                <h2>Un regard expert, un ancrage local.</h2>
+                <p style="font-size: 18px; margin-top: 20px; line-height: 1.6;">Je m'appelle <strong>Bernadette</strong>, et j'ai fondé BRENDABOX avec une conviction simple : <br><em>“Les artisans, commerçants et thérapeutes méritent une présence en ligne aussi soignée que leur travail.”</em></p>
+                <ul>
+                    <li><strong>Ancrée localement</strong> : Basée à Ciboure, je connais la réalité des commerces de notre région.</li>
+                    <li><strong>Portée internationale</strong> : J'accompagne aussi une clientèle en Espagne et à l'international.</li>
+                    <li><strong>Architecte IA</strong> : Mon expertise me permet d'analyser vos fiches avec une précision parfaite.</li>
+                    <li><strong>Approche humaine</strong> : Pas de rapport automatisé. Chaque audit est réfléchi et adapté.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS (Integrated from text) -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>“ Bernadette a transformé ma fiche en 5 jours. Depuis, j'ai 3 fois plus de demandes de devis via Google. ”</p>
+                    <div class="author">Amaia Etchegaray</div>
+                    <div class="role">Gérante, Boutique Artisanale</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>“ Le Pack Sérénité m'a libéré l'esprit. Je ne regarde plus mes avis, l'IA répond parfaitement et j'ai plus de monde en salle. ”</p>
+                    <div class="author">Jean-Luc Morel</div>
+                    <div class="role">Restaurateur, Côte Basque</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>“ Enfin une solution qui ne coûte pas 500€ par mois pour juste poster 2 photos. Le One-Shot est imbattable. ”</p>
+                    <div class="author">Béatrice D.</div>
+                    <div class="role">Coiffeuse Indépendante</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">F.A.Q.</span>
+                <h2>Questions fréquentes</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3>Pourquoi payer une fois et pas par mois ?</h3>
+                    <p>Parce que votre fiche vous appartient. Une fois optimisée correctement, elle performe sans frais récurrents. Mon assistance IA en option s'occupe de la maintenance, mais le gros du travail est fait pour durer.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Je n'ai pas le temps de gérer les avis...</h3>
+                    <p>C'est tout l'intérêt du Pack Sérénité. Mon système IA surveille votre fiche et répond en 1h, de manière courtoise et professionnelle, dans la langue du client.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Faut-il vous donner mes codes Google ?</h3>
+                    <p>Non, vous me nommez simplement "Gestionnaire de fiche" (je vous montre comment en 2 clics). Vous restez propriétaire total de vos comptes à 100%.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta-section">
+        <div class="container cta-content">
+            <span class="section-tag" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3);">Lancez-vous</span>
+            <h2>Prêt à reprendre le contrôle de votre <br>visibilité digitale ?</h2>
+            <p style="font-size: 18px; margin-top: 20px; opacity: 0.9;">Ne laissez plus vos clients aller chez la concurrence par simple manque d'information.</p>
+            
+            <div class="cta-features">
+                <div class="cta-feature-item">
+                    <span class="material-symbols-outlined" translate="no">verified</span>
+                    <span>Audit offert sans engagement</span>
+                </div>
+                <div class="cta-feature-item">
+                    <span class="material-symbols-outlined" translate="no">bolt</span>
+                    <span>Mise en place en moins de 7 jours</span>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                <button onclick="openModal()" class="btn btn-primary" style="background: white; color: var(--primary-dark);">
+                    C'est parti : Je veux mon audit
+                </button>
+                <a href="mailto:contact@brendaboxia.com" class="btn btn-outline" style="border-color: white; color: white;">
+                    Me poser une question
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="logo">Brenda<span>boxia</span></div>
+            <div class="footer-links">
+                <a href="#">Mentions Légales</a>
+                <a href="#">Conditions Générales de Vente</a>
+                <a href="mailto:contact@brendaboxia.com">Support Client</a>
+            </div>
+            <p>BRENDABOXIA — Architecte IA pour commerçants et artisans.<br>© 2026 Tous droits réservés. Designant with ❤️ in Ciboure.</p>
+            <div class="footer-bottom">
+                Propulsé par l'IA Antigravity pour une performance optimale.
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DIAGNOSTIC -->
+    <div id="diagnosticModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <h2 style="margin-bottom: 10px;">Votre Audit Offert</h2>
+            <p style="color: var(--text-muted); font-size: 15px; margin-bottom: 25px;">Laissez-moi les coordonnées de votre établissement pour que je puisse commencer l'analyse.</p>
+            <form id="auditForm" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label>Nom de votre établissement</label>
+                    <input type="text" placeholder="Ex: Boulangerie Dubois" required>
+                </div>
+                <div class="form-group">
+                    <label>Votre Email</label>
+                    <input type="email" placeholder="contact@votre-commerce.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Adresse complète (ou lien Maps)</label>
+                    <input type="text" placeholder="Lien ou adresse" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Envoyer ma demande</button>
+            </form>
+            <div id="successMsg" style="display: none; text-align: center; padding: 20px 0;">
+                <span class="material-symbols-outlined" style="color: var(--accent-magenta); font-size: 48px; margin-bottom: 10px;">check_circle</span>
+                <h4 style="color: var(--primary-dark); margin-bottom: 10px;">C'est noté !</h4>
+                <p style="color: var(--text-muted); font-size: 15px;">Je me mets au travail et vous reçois votre analyse très vite par email.</p>
+            </div>
+        </div>
+    </div>
+
+    </div> <!-- FIN NOTRANSLATE -->
+    <script>
+        function openModal() {
+            document.getElementById('diagnosticModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('diagnosticModal').classList.remove('active');
+            // reset form state
+            document.getElementById('auditForm').style.display = 'block';
+            document.getElementById('successMsg').style.display = 'none';
+            document.getElementById('auditForm').reset();
+        }
+
+        function submitForm(e) {
+            e.preventDefault();
+            // In a real scenario, you'd send data to a backend or an automation tool like Make/Zapier here.
+            // For now, we just show the success message.
+            document.getElementById('auditForm').style.display = 'none';
+            document.getElementById('successMsg').style.display = 'block';
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('diagnosticModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
